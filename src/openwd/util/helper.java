@@ -368,8 +368,8 @@ public class helper {
 		funid.mkdir();
         //复制文档到临时处理目录， 并改名为处理文件名称。
 		try {
-			String realfile=realpath+ File.separator +FileUtil.genPath(unid)+File.separator+filename;
-			String destfile=filepath+java.io.File.separator + filename;
+			//String realfile=realpath+ File.separator +FileUtil.genPath(unid)+File.separator+filename;
+			//String destfile=filepath+java.io.File.separator + filename;
 			File scrFile=new File(realpath+ File.separator +FileUtil.genPath(unid)+File.separator+filename);
 			if(scrFile.isFile()){//是以doc结尾的文档
 				FileUtil.doCopyFile(new File(realpath+ File.separator +FileUtil.genPath(unid)+File.separator+filename), new File(filepath

@@ -199,7 +199,7 @@ public class FileUtil {
 		
 		String servPath = request.getSession().getServletContext().getRealPath(""); /**取得服务器路径*/
     	
-    	String configPathKey = "URL_ZFW"; /**所有附件存储默认路径*/		
+    	String configPathKey = "URL_OPENDOC"; /**所有附件存储默认路径*/		
     	String RealPath = servPath + File.separator + OpenConfig.getkeyvalue(configPathKey); /**文件保存根目录*/	
     	
 		return RealPath;

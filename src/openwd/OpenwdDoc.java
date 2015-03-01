@@ -111,7 +111,7 @@ public class OpenwdDoc extends HttpServlet {
 				in = req.getInputStream();
 				out = res.getOutputStream();
 				datalength = req.getContentLength();
-				log.info("req.getContentLength()-------------------------------:"+datalength);
+				log.info("req.getContentLength():"+datalength);
 				
 				in.read(ud);
 			} catch (IOException f) {
