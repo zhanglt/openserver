@@ -133,8 +133,7 @@ public class FileUtil {
 			institution_id = institution_id.trim();
 		}
 		
-		pid.append(institution_id.trim());//公检法标记
-		System.out.println("--------------------在线编辑文档的pid:"+pid);     
+		pid.append(institution_id.trim());//公检法标记 
 		return pid.toString();
 	}
 	/**

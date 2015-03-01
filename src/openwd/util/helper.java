@@ -111,7 +111,7 @@ public class helper {
 		} catch (IOException e) {
 			log.error("err172:" + e);
 		}
-       System.out.println("dataByte.length---------------------:"+dataByte.length);
+       
 		String qx = new String(dataByte, 0, 1);   // 0编辑,1修改,2浏览
 		String dg = new String(dataByte, 1, 1);   // 生成文档标识
 		String unid = new String(dataByte, 2, 23);// 文档PID

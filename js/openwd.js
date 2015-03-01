@@ -62,8 +62,8 @@ function viewLegalDoc(doc_url,power)
 	 
 	//if(flag==0) {
 		//document.forms[0].cal.SetFlag(6,1);
-		//wintitle=document.title+" - Microsoft Internet Explorer";
-		//document.forms[0].cal.ShowWindows(wintitle,-1);
+		wintitle="OAD_SDopenwd.doc" + " - Microsoft Word";
+		document.forms[0].cal.ShowWindows(wintitle,-1);
 	//}
 }
 //打开文档并修改文档，bookmarks文档中内容插入word标签
