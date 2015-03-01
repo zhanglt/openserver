@@ -17,23 +17,20 @@ import openwd.util.TimeKeep;
 import openwd.util.helper;
 
 public class OpenwdDoc extends HttpServlet {
-
- 
-	String fileuploadpath = null;// 处理上传文件的临时目录
+	String fileuploadpath 	= null;// 处理上传文件的临时目录
 	String filedownloadpath = null;// 处理下载文件临时目录
-	String openofficepath   =null;   //openoffice 程序安装目录
-	String cabflag = null;
-	String cabpath = null;
-	String logpath = null;
+	String openofficepath   = null;//openoffice 程序安装目录
+	String cabflag 	 = null;
+	String cabpath	 = null;
+	String logpath 	 = null;
 	String clearpath =null ; 
 	String cleartime =null;
 	String timeblank =null;
-	String endblank =null;
+	String endblank  =null;
 	int initflag = 0;
 	int timeflag = 0;
-	int filenum = 0;
-	helper hp = new helper();
-
+	int filenum  = 0;
+	helper hp    = new helper();
 	static Logger log = Logger.getLogger(OpenwdDoc.class.getName());
 	public void service(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
@@ -46,12 +43,13 @@ public class OpenwdDoc extends HttpServlet {
 					Properties p = new Properties();
 					try {
 						InputStream in = OpenwdDoc.class
-								.getResourceAsStream("ZLserver.ini");// 与类在同一级，也可用/package/path/to/fileName
+								.getResourceAsStream("ZLserver.ini");
 						p.load(in);
 						in.close();
 					} catch (Exception e) {
-
+						log.error("err:加载ZLserver.ini配置文件出错", e);
 					}
+					
 					if (p.containsKey("fileuploadpath")) {
 						this.fileuploadpath = p.getProperty("fileuploadpath");
 					}
@@ -92,10 +90,8 @@ public class OpenwdDoc extends HttpServlet {
 						TimeKeep tk = new TimeKeep(fileuploadpath, clearpath ,cleartime , timeblank , endblank ,filedownloadpath );
 						tk.start();
 						timeflag = 1;
-						// log
 						log.debug("-= timekeeper started =-");
 					} else {
-						// log
 						log.debug("err: servlet do not inited");
 					}
 				}
@@ -111,63 +107,55 @@ public class OpenwdDoc extends HttpServlet {
 				in = req.getInputStream();
 				out = res.getOutputStream();
 				datalength = req.getContentLength();
-				log.info("req.getContentLength():"+datalength);
-				
 				in.read(ud);
 			} catch (IOException f) {
 				log.error("init in-out err:" + f);
 				return;
 			}
-
+			
 			// 请求参数的第一个字符，代表操作类型	 d:下载，u:上传
-			String rtp = new String(ud);
 
-			log.debug("输入参数rtp: " + rtp);
-			try {   //下载数据请求
-				String realpathString = FileUtil.getRealPath(req);	
-				log.debug("realpathString==================:"+realpathString);
-				if (rtp.equals("d")) {
-					log.debug("downL begin - " + numstr);
-					hp.downLoad(in, out, datalength, numstr, filedownloadpath,realpathString);
-					log.debug("downL end - " + numstr);
-                    //上传输数据请求
-				} else if (rtp.equals("u")) {
-					log.debug("upL begin - " + numstr);
-					hp.upLoad(in, out, datalength, numstr,fileuploadpath,openofficepath,realpathString);
-					log.debug("upL end - " + numstr);
-                    /*上传文档，并转换PDF*/
-				} else if (rtp.equals("c")) {
-					log.debug("downUNDLL begin - " + numstr);
-					hp.downCab(in, out, datalength, cabpath);
-					log.debug("downUNDLL end - " + numstr);
-				/*下载UNDLL.dll*/
-			} else if (rtp.equals("z")) {
-					log.debug("downZIPDLL begin - " + numstr);
-					hp.downCab2(in, out, datalength, cabpath);
-					log.debug("downZIPDLL end - " + numstr);
-					/*下载ZIPDLL.dll*/
-				} else {
-					
-					log.error("realpathString==================:"+realpathString);
-					log.error("错误的输入参数=(" + rtp + ")" + numstr);
-					byte[] bd = null;
-					try {
-						out.write(new String("error").getBytes());
-						out.flush();
-						bd = new byte[33];
-						in.read(bd);
-					} catch (IOException sdf) {
-						System.out.println("err:" + sdf);
-						log.error("err166:" + sdf);
-					}
-					log.debug("（输入参数）= " + (new String(bd)) + " - "
-									+ numstr);
+			log.debug("输入参数rtp: " + new String(ud));
+			char rtp =(new String(ud)).charAt(0);
+			String realpathString = FileUtil.getRealPath(req);	
+			switch(rtp){
+			case 'd':
+				log.debug("downL begin - " + numstr);
+				hp.downLoad(in, out, datalength, numstr, filedownloadpath,realpathString);
+				log.debug("downL end - " + numstr);
+				break;
+			case 'u':
+				log.debug("upL begin - " + numstr);
+				hp.upLoad(in, out, datalength, numstr,fileuploadpath,openofficepath,realpathString);
+				log.debug("upL end - " + numstr);
+				break;
+			case 'c':
+				log.debug("downUNDLL begin - " + numstr);
+				hp.downCab(in, out, datalength, cabpath);
+				log.debug("downUNDLL end - " + numstr);
+				break;
+			case 'z':
+				log.debug("downZIPDLL begin - " + numstr);
+				hp.downCab2(in, out, datalength, cabpath);
+				log.debug("downZIPDLL end - " + numstr);
+				break;
+			default:
+				log.error("realpathString==================:"+realpathString);
+				log.error("错误的输入参数=(" + rtp + ")" + numstr);
+				byte[] bd = null;
+				try {
+					out.write(new String("error").getBytes());
+					out.flush();
+					bd = new byte[33];
+					in.read(bd);
+				} catch (IOException sdf) {
+					System.out.println("err:" + sdf);
+					log.error("err166:" + sdf);
 				}
-				
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-				ex.printStackTrace();
+				log.debug("（输入参数）= " + (new String(bd)) + " - "
+								+ numstr);
 			}
+									
 		} catch (Exception e) {
 			System.out.println("初始化失败，请看到配置文件ZLserver.ini是否配置");
 			e.printStackTrace();
