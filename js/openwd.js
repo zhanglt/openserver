@@ -1,4 +1,8 @@
-//法律文书上传到服务器操作
+
+function upLoad(doc_url){
+	Initialization(doc_url);
+	flag=document.forms[0].cal.SendDocumentFile("u199999999999999999999999",1);
+}
 function upLoadLegalFiles(bkid)
 {	
 	//上传正文、定稿正文、盖章正文
@@ -58,7 +62,7 @@ function viewLegalDoc(doc_url,power)
 {
 	Initialization(doc_url);
 	
-	document.forms[0].cal.GetDocumentFile("d1z9999999999999999999999999","zhangletao",1,0);
+	document.forms[0].cal.GetDocumentFile(1, 1);
 	 
 	//if(flag==0) {
 		//document.forms[0].cal.SetFlag(6,1);
@@ -110,6 +114,8 @@ function Initialization(doc_value){
 	document.forms[0].cal.ServerIp=ip;
 	document.forms[0].cal.ServerPort=port;
 	document.forms[0].cal.ServerPath=basePath+"openDoc"
-   
+    document.forms[0].cal.DocumentType=0;
+    document.forms[0].cal.FileID = "9999999999999999999999999";
+    document.forms[0].cal.UserName = "zhangletao";
 }
 //*****************************************************************************************

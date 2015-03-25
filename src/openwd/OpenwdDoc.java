@@ -119,30 +119,22 @@ public class OpenwdDoc extends HttpServlet {
 			char rtp =(new String(ud)).charAt(0);
 			String realpathString = FileUtil.getRealPath(req);	
 			switch(rtp){
-			case 'd':
-				log.debug("downL begin - " + numstr);
-				hp.downLoad(in, out, datalength, numstr, filedownloadpath,realpathString);
-				log.debug("downL end - " + numstr);
-				break;
-			case 'u':
-				log.debug("upL begin - " + numstr);
-				hp.upLoad(in, out, datalength, numstr,fileuploadpath,openofficepath,realpathString);
-				log.debug("upL end - " + numstr);
-				break;
-			case 'c':
-				log.debug("downUNDLL begin - " + numstr);
-				hp.downCab(in, out, datalength, cabpath);
-				log.debug("downUNDLL end - " + numstr);
-				break;
-			case 'z':
-				log.debug("downZIPDLL begin - " + numstr);
-				hp.downCab2(in, out, datalength, cabpath);
-				log.debug("downZIPDLL end - " + numstr);
-				break;
-			default:
-				log.error("realpathString==================:"+realpathString);
-				log.error("错误的输入参数=(" + rtp + ")" + numstr);
-				byte[] bd = null;
+				case 'd':
+					hp.downLoad(in, out, datalength, numstr, filedownloadpath,realpathString);
+					break;
+				case 'u':
+					hp.upLoad(in, out, datalength, numstr,fileuploadpath,openofficepath,realpathString);
+					break;
+				case 'c':
+					hp.downCab(in, out, datalength, cabpath);
+					break;
+				case 'z':
+					hp.downCab2(in, out, datalength, cabpath);
+					break;
+				default:
+					log.error("realpathString==================:"+realpathString);
+					log.error("错误的输入参数=(" + rtp + ")" + numstr);
+					byte[] bd = null;
 				try {
 					out.write(new String("error").getBytes());
 					out.flush();

@@ -98,14 +98,15 @@ public class helper {
 	 * @param numstr
 	 * @param filedownloadpath
 	 */
-	public void downLoad(ServletInputStream in, ServletOutputStream out,
-			int datalen,String numstr,String filedownloadpath ,String realpath) {
-
+	public void downLoad(ServletInputStream in, 
+						ServletOutputStream out,
+						int datalen,
+						String numstr,
+						String filedownloadpath ,
+						String realpath) {
 		int datalength = datalen;
-		log.debug("downL - datalength in downLoad() is " + datalength);
 		Vector<Object> vvv = new Vector<Object>();
 		byte[] dataByte = new byte[datalength - 1];
-
 		try {
 			in.read(dataByte);
 		} catch (IOException e) {
@@ -115,58 +116,15 @@ public class helper {
 		String qx = new String(dataByte, 0, 1);   // 0编辑,1修改,2浏览
 		String dg = new String(dataByte, 1, 1);   // 生成文档标识
 		String unid = new String(dataByte, 2, 23);// 文档PID
-
-		byte[] head1 = null;
-		byte[] head2 = null;
-		byte[] head3 = null;
-		byte[] head4 = null;
-		byte[] head5 = null;
-		byte[] head6 = null;
-		byte[] head7 = null;
-
-		String str1 = new String("HEADSTART\n" + qx + "\n" + "HEADEND\n");
-		String str2 = new String("FILEHEADSTART\n");
-		String str3 = new String("FILEHEADEND\n" + "TMPSTART\n");
-		String str4 = new String("TMPEND\n" + "DATASTART\n");
-		String str5 = new String("\nDATAEND");
-		String str6 = new String("\nPICTURESTART\n");
-		String str7 = new String("\nPICTUREEND");
-
-		head1 = new byte[str1.length()];
-		head1 = str1.getBytes();
-		head2 = new byte[str2.length()];
-		head2 = str2.getBytes();
-		head3 = new byte[str3.length()];
-		head3 = str3.getBytes();
-		head4 = new byte[str4.length()];
-		head4 = str4.getBytes();
-		head5 = new byte[str5.length()];
-		head5 = str5.getBytes();
-		head6 = new byte[str6.length()];
-		head6 = str6.getBytes();
-		head7 = new byte[str7.length()];
-		head7 = str7.getBytes();
-
 		/**打开文档*/
 		if (dg.equals("z")) {
-			log.debug("view z d-begin408");
 			vvv = this.getDData( unid, filedownloadpath,  numstr,realpath);
 			byte[] fileBytes = (byte[]) vvv.elementAt(0);
-			//int filelen = ((Integer) vvv.elementAt(1)).intValue();
-	
 			try {
-				out.write(head1);
-				out.write(head2);
-				out.write(head3);
-				out.write(head4);
 				out.write(fileBytes);
-				out.write(head5);
-				out.write(head6);
-				out.write(head7);
 				out.flush();
 				out.close();
 				in.close();
-				log.debug("view z d-end447");
 			} catch (IOException eerr) {
 				log.error("err509:" + eerr);
 			}
@@ -191,7 +149,7 @@ public class helper {
 	/**上传到服务器*/
 	public void upLoad(ServletInputStream in, ServletOutputStream out,
 			int datalen, String numstr,String fileuploadpath,String openofficepath,String realpathString) {
-
+		System.out.println("datalen:"+datalen);
 		int datalength = datalen;
 		File upFile = null;
 		String filePath = fileuploadpath;
@@ -254,7 +212,7 @@ public class helper {
 					}
 					Thread.sleep(10);
 					fos = new FileOutputStream(upFile);
-					for (int bbv = 0; bbv < (datalength - 25); bbv++) {
+					for (int bbv = 0; bbv < (datalength - 24); bbv++) {
 						in.read(upByte);
 						fos.write(upByte);
 					}
@@ -386,14 +344,7 @@ public class helper {
 			System.out.println(e);
 		}
 		
-	
-        //将正文文件打包，用于传输到客户端
-		int ret = cab(filepath, cabname, filename);
-		if (ret != 1) {
-			log.error("cab err324");
-			return null;
-		}
-		ff = new File(filepath + cabname);
+		ff = new File(filepath + filename);
 		if (ff.exists()) {
 			filelen = new Long(ff.length()).intValue();
 
@@ -478,7 +429,8 @@ public class helper {
 				log.debug("unCabZW begin.");
 				log.debug("unCab "+filename+" from "+cabfile);
 				
-				ZipFile zipf = new ZipFile(filepath + cabfile);
+				//ZipFile zipf = new ZipFile(filepath + cabfile);
+				ZipFile zipf = new ZipFile("C:\\Temp\\uploadfiles\\999999999999999999999991\\99999999999999999999999_dg.zip");
 				ZipEntry entry = zipf.getEntry(filename);
 
 				if (entry == null) {
@@ -496,7 +448,7 @@ public class helper {
 				zipf.close();
 				dest.close();
 				is.close();
-			} catch (IOException ee) {
+			} catch (Exception ee) {
 				log.error("uncab err 180: " + ee);
 				return 0;
 			}

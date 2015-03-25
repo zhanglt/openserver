@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="GBK"%>
+
 <html>
 <SCRIPT src="js/openwd.js" type=text/javascript></SCRIPT>
 <%String hostUrl=request.getLocalAddr()+":"+request.getLocalPort(); %>
@@ -9,7 +10,8 @@
 	</OBJECT>
 <input name="path" value="<%=request.getContextPath()%>" >
 <input name="url" value="<%=hostUrl%>" >
-<input type="button"  name="openDOC" value="docview" onclick="viewLegalDoc('d1z9999999999999999999999999',1)">
+<input type="button"  name="openDOC"   value="docview"   onclick="viewLegalDoc('d1z9999999999999999999999999',1)">
+<input type="button"  name="docUpload" value="docUpload" onclick="upLoad('u199999999999999999999999')">
 </form>
 
 
